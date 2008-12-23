@@ -1,14 +1,14 @@
 <?php
 if(!defined("SITE_PATH") || !defined("APP_FOLDER")){
-	exit("No route is defined");
+  exit("No route is defined");
 }
-
-
+ 
+ 
 // initialize array variable
 $config = array();
-
+ 
 $config["env"] = "development";
-
+ 
 // database configuration for production
 $config["database"] = array();
 // adapter is not yet implemented
@@ -17,8 +17,8 @@ $config["database"]["host"] = "localhost";
 $config["database"]["db_name"] = "ceva";
 $config["database"]["db_user"] = "root";
 $config["database"]["db_pass"] = "";
-
-
+ 
+ 
 // development configuration
 $config["development"] = array();
 $config["development"]["database"] = $config["database"];
@@ -30,6 +30,6 @@ $config["development"]["cache"] = false;
 $config["development"]["flush_cache"] = true;
 // generate the routing tree at every request - takes time
 $config["development"]["gen_routing_tree"] = true;
-
-
+ 
+ 
 ?>

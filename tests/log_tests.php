@@ -1,5 +1,5 @@
 <?php
-# Tests for log functions
+# Tests for log egg
 include_once(EGGS_PATH."log.php");
 class TestOfLog extends UnitTestCase{
 	function testLogConstructorCreatesFileInLogFolder(){

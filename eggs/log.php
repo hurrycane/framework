@@ -28,7 +28,8 @@ class Log{
 		foreach($this->log_content as $line){
 			fwrite($this->handle,$line."\n");
 		}
-		fclose($this->handle);
+
+		if($this->handle) fclose($this->handle);
 	}
 
 }
