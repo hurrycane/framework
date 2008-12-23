@@ -18,6 +18,8 @@ class AllTests extends TestSuite {
     function AllTests() {
         $this->TestSuite('All tests');
         $this->addFile(TESTS_PATH."/common_tests.php");
+        $this->addFile(TESTS_PATH."/log_tests.php");
+
     }
     
 }

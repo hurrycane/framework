@@ -1,3 +1,4 @@
 tests/log/error.log
 tests/log/access.log
 *.sw?
+*.log
