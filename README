@@ -1,1 +1,7 @@
 This is a PHP framework.
+
+You need : PHP >5.2.6
+           MySQL >5.0.5
+           to CHMOD to 777 the config folder
+
+

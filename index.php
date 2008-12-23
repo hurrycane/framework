@@ -12,5 +12,4 @@ include_once(SITE_PATH . "config/boot.php");
 # include environment specific settings
 include_once(SITE_PATH . "config/environment.php");
 
-
 ?>
