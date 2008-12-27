@@ -5,6 +5,7 @@ include_once(EGGS_PATH."routing.php");
 class TestOfRoutingEngine extends UnitTestCase{
 	function testRoutingDumpToFile(){
 		$routes = new Routes;
+
 		$routes->connect("login/:ceva",
 		                 ":controller=>login",
 				 ":action=>show");
@@ -30,6 +31,14 @@ class TestOfRoutingEngine extends UnitTestCase{
 				 ":controller=>login",
 				 ":action=>show");
 		$this->assertTrue(count($routes->routing_tree[0][0]["name"])==2);
+	}
+	function testRESTfulRouting(){
+		$routes = new Routes;
+		$routes->resources("teams");
+		$routes->dump_to_file("restful");
+		include_once(SITE_PATH."config/restful.tmp.php");
+		unlink(SITE_PATH."config/restful.tmp.php");
+		$this->assertEqual($routes->routing_tree,$root);
 	}
 }
 ?>

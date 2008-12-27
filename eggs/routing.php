@@ -10,8 +10,42 @@ class Routes extends Routing{
 		$this->add_to_tree($path,$opt);
 	}
 
-	public function resources(){
-	
+	public function resources($controller){
+		# index
+		$this->connect($controller,
+		               ":controller=>$controller",
+			       ":action=>index",
+			       ":method=>GET");
+		# show
+		$this->connect($controller."/:id",
+		               ":controller=>$controller",
+			       ":action=>show",
+			       ":method=>GET");
+		# new
+		$this->connect($controller."/new",
+		               ":controller=>$controller",
+			       ":action=>new",
+			       ":method=>GET");
+		# edit
+		$this->connect($controller."/:id/edit",
+		               ":controller=>$controller",
+			       ":action=>edit",
+			       ":method=>GET");
+		# create
+		$this->connect($controller,
+		               ":controller=>$controller",
+			       ":action=>create",
+			       ":method=>POST");
+		# update
+		$this->connect($controller."/:id",
+		               ":controller=>$controller",
+			       ":action=>update",
+			       ":method=>POST");
+		# delete
+		$this->connect($controller."/:id/delete",
+		               ":controller=>$controller",
+			       ":action=>delete",
+			       ":method=>POST");
 	}
 
 	public function dump_to_file($file_name){
@@ -140,10 +174,10 @@ class Routes extends Routing{
 			$methods=array("both","get","post");
 			$intersect = array_intersect(array_keys($x),$methods);
 			if(!empty($intersect)){
-				$cv = array_keys($intersect);
-				$v=$intersect[$cv[0]];
-				foreach($x[$v] as $key=>$value){
-					$output.=$hd . '["'.$v.'"]'.'["'.$key.'"]='.'"'.$value.'";'."\n";
+				foreach($intersect as $v){
+					foreach($x[$v] as $key=>$value){
+						$output.=$hd . '["'.$v.'"]'.'["'.$key.'"]='.'"'.$value.'";'."\n";
+					}
 				}
 
 			}
