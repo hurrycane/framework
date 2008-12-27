@@ -58,6 +58,12 @@ class Routes extends Routing{
 			}
 			$obj = &$current;
 		}
+		if(!empty($opt["method"])){
+			$obj[strtolower($opt["method"])]=$opt;
+			unset($obj[strtolower($opt["method"])]["method"]);
+		}else{
+			$obj["both"]=$opt;
+		}
 	}
 
 	private function create_elem($part){
@@ -104,14 +110,14 @@ class Routes extends Routing{
 	}
 
 	private function build_output($handle){
-		$this->h=$handle;
+		$h=$handle;
 		$root = &$this->routing_tree;
 		$output = "<?php\n";
 		$output .= '$root = array();'."\n";
 		$output .= $this->dfs($root,'$root');
 		$output .= "?>";
-		fwrite($this->h,$output);
-		fclose($this->h);
+		fwrite($h,$output);
+		fclose($h);
 	}
 
 	private function dfs($root,$header){
@@ -121,6 +127,7 @@ class Routes extends Routing{
 			$hd = $header."[".$i."]";
 			$output .= $hd ."=array();\n";
 			$output .= $hd . "[".'"type"'."]=".'"'.$x["type"].'"'.";\n";
+
 			if($x["type"]=="any"){
 				$output .= $hd . '["name"]=array();'."\n";
 				for($j=0;$j<count($x["name"]);$j++){
@@ -129,6 +136,18 @@ class Routes extends Routing{
 			}else{
 				$output .= $hd . "[".'"name"'."]=".'"'.$x["name"].'"'.";\n";
 			}
+
+			$methods=array("both","get","post");
+			$intersect = array_intersect(array_keys($x),$methods);
+			if(!empty($intersect)){
+				$cv = array_keys($intersect);
+				$v=$intersect[$cv[0]];
+				foreach($x[$v] as $key=>$value){
+					$output.=$hd . '["'.$v.'"]'.'["'.$key.'"]='.'"'.$value.'";'."\n";
+				}
+
+			}
+
 			$output .= $this->dfs($x,$hd);
 		}
 		return $output;
