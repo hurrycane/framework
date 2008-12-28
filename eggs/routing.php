@@ -2,6 +2,27 @@
 class Routing{
 }
 
+class NestedRoutes{
+	private $routing;
+	public $controller;
+
+	function __construct($ref){
+		$this->routing=$ref;
+	}
+
+	function __call($method,$opt){
+		switch($method){
+			case "resources":
+				$this->routing->resources($opt[0],$this->controller."/:id/");
+			break;
+			default:
+				trigger_error("No method with the name: $method",E_USER_ERROR);
+			break;
+		}
+	}
+}
+
+
 class Routes extends Routing{
 	public $routing_tree = array();
 
@@ -10,42 +31,47 @@ class Routes extends Routing{
 		$this->add_to_tree($path,$opt);
 	}
 
-	public function resources($controller){
+	public function resources($controller,$header=false){
 		# index
-		$this->connect($controller,
+		$this->connect($header.$controller,
 		               ":controller=>$controller",
 			       ":action=>index",
 			       ":method=>GET");
-		# show
-		$this->connect($controller."/:id",
-		               ":controller=>$controller",
-			       ":action=>show",
-			       ":method=>GET");
 		# new
-		$this->connect($controller."/new",
+		$this->connect($header.$controller."/new",
 		               ":controller=>$controller",
 			       ":action=>new",
 			       ":method=>GET");
+
+		# show
+		$this->connect($header.$controller."/:id",
+		               ":controller=>$controller",
+			       ":action=>show",
+			       ":method=>GET");
 		# edit
-		$this->connect($controller."/:id/edit",
+		$this->connect($header.$controller."/:id/edit",
 		               ":controller=>$controller",
 			       ":action=>edit",
 			       ":method=>GET");
 		# create
-		$this->connect($controller,
+		$this->connect($header.$controller,
 		               ":controller=>$controller",
 			       ":action=>create",
 			       ":method=>POST");
 		# update
-		$this->connect($controller."/:id",
+		$this->connect($header.$controller."/:id",
 		               ":controller=>$controller",
 			       ":action=>update",
 			       ":method=>POST");
 		# delete
-		$this->connect($controller."/:id/delete",
+		$this->connect($header.$controller."/:id/delete",
 		               ":controller=>$controller",
 			       ":action=>delete",
 			       ":method=>POST");
+
+		$nested = new NestedRoutes($this);
+		$nested->controller=$controller;
+		return $nested;
 	}
 
 	public function dump_to_file($file_name){
@@ -80,7 +106,7 @@ class Routes extends Routing{
 			}else{
 				$b=$this->check_for_part($parts[$i],$obj);
 				if($b!=-1){
-					if($b[0]==1){
+					if($b[0]==1&&empty($b[2])){
 						$obj[$b[1]]["name"][]=substr($parts[$i],1);
 					}
 					$current=&$obj[$b[1]];
@@ -120,12 +146,22 @@ class Routes extends Routing{
 		$found = 0;
 		$type = 0;
 		$place = 0;
+		$any_exists=FALSE;
 
 		for($i=0;$i<$obj["count"];$i++){
 			if($obj[$i]["type"]=="any"&&$a!=0){
+				$w = substr($part,1);
+				$biz = -1;
+				for($j=0;$j<count($obj[$i]["name"]);$j++){
+					if($obj[$i]["name"][$j]==$w){
+						$biz = $j;
+						break;
+					}
+				}
 				$type=1;
 				$place=$i;
 				$found=1;
+				if($biz!=-1) $any_exists=TRUE;
 				break;
 			}elseif($obj[$i]["type"]=="normal"&&$a==0){
 				if($obj[$i]["name"]==$part){
@@ -139,7 +175,9 @@ class Routes extends Routing{
 		if($found==0) {
 			return -1;
 		}else{
-			return array($type,$place);
+			$ar = array($type,$place);
+			if($any_exists!=FALSE) array_push($ar,$any_exists);
+			return $ar;
 		}
 	}
 

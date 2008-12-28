@@ -40,5 +40,14 @@ class TestOfRoutingEngine extends UnitTestCase{
 		unlink(SITE_PATH."config/restful.tmp.php");
 		$this->assertEqual($routes->routing_tree,$root);
 	}
+	function testNestedRoutes(){
+		$routes = new Routes;
+		$nested =$routes->resources("teams");
+		$nested->resources("ceva");
+		$routes->dump_to_file("nested");
+		include_once(SITE_PATH."config/nested.tmp.php");
+		$this->assertEqual($routes->routing_tree,$root);
+		unlink(SITE_PATH."config/nested.tmp.php");
+	}
 }
 ?>
