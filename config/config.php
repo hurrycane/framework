@@ -8,7 +8,6 @@ if(!defined("SITE_PATH") || !defined("APP_FOLDER")){
 $config = array();
  
 $config["env"] = "development";
- 
 // database configuration for production
 $config["database"] = array();
 // adapter is not yet implemented

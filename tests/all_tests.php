@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once('simpletest/autorun.php');
 
 $site_path = str_replace("\\", "/", realpath(dirname(__FILE__)));
@@ -22,11 +23,11 @@ class AllTests extends TestSuite {
         $this->addFile(TESTS_PATH."/benchmark_tests.php");
 	$this->addFile(TESTS_PATH."/routing_tests.php");
 	$this->addFile(TESTS_PATH."/request_tests.php");
-	#$this->addFile(TESTS_PATH."/controller_tests.php");
+	$this->addFile(TESTS_PATH."/controller_tests.php");
 
 
     }
     
 }
-
+ob_end_clean();
 ?>

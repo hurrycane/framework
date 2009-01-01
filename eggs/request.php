@@ -17,6 +17,7 @@ Class Request{
 	# FIXME session and cookie are not parsed and/or espaced at this level
 	public $session;
 	public $cookie;
+	public $uri_parts;
 
 	function __construct(){
 		$this->request_method();
@@ -91,6 +92,13 @@ Class Request{
 		$this->query_string = $_SERVER["QUERY_STRING"];
 		$this->path=$_SERVER["REQUEST_URI"];
 		$this->referer=$_SERVER["HTTP_REFERER"];
+		
+		$p=$this->path;
+		$pos = strpos($p,"?");
+		$p =  substr($p,0,$pos);
+		if($p{0}=="/") $p=substr($p,1);
+		if($p{strlen($p)-1}=="/") $p=substr($p,0,strlen($p)-1);
+		$this->uri_parts=explode("/",$p);
 	}
 
 	private function params(){
