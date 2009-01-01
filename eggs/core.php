@@ -16,7 +16,6 @@ $log = load_egg("log",1,"application");
 # dinamic loading of models and database resources
 
 # $controller = load_egg("controller",1);
-# $controller->init();
 # $request = $controller->request();
 # $routing = load_egg("routing",1);
 # $routing_info = $routing->route();

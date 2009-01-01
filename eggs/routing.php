@@ -6,15 +6,17 @@ class Routing{
 	private $param;
 
 	function __construct($request,$routes_file="routes"){
-
 		$this->load_tree($routes_file);
-
-		$this->url=explode("/",$request["url"]);
-		$this->method=$request["method"];
+		$this->url=$request->uri_parts;
+		$this->method=$request->request_method;
 	}
 
 	public function climb(){
 		$result=$this->mount($this->routing_tree,0);
+		if(!empty($result["error"])) {
+			trigger_error($result["error"],E_USER_ERROR);
+			exit($result["error"]);
+		}
 		if(!empty($this->param)){
 			$result["param"]=$this->param;
 		}
@@ -37,7 +39,6 @@ class Routing{
 				break;
 			}
 		}
-
 		if($found!=-1){
 			if($root["type"]=="any"){
 				$this->param[$root["name"][$found]]=$this->url[$part-1];

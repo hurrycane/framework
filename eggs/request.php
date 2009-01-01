@@ -18,6 +18,7 @@ Class Request{
 	public $session;
 	public $cookie;
 	public $uri_parts;
+	public $request_info;
 
 	function __construct(){
 		$this->request_method();

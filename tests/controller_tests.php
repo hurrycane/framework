@@ -6,7 +6,6 @@ include_once(SITE_PATH."tests/fixtures/test_controller.fixture.php");
 
 
 class TestOfController extends UnitTestCase{
-/*
 	function testControllerFlash(){
 		session_unset();
 		$controller = new Controller();
@@ -31,7 +30,7 @@ class TestOfController extends UnitTestCase{
 		$this->assertEqual($test->flash["altceva"],"ceva");
 		session_destroy();
 	}
-*/
+
 	function testAfterBefore(){
 		$controller = new Controller();
 		ob_start();
@@ -54,7 +53,22 @@ class TestOfController extends UnitTestCase{
 		ob_end_clean();
 		$this->assertTrue(in_array("Location: http://google.com",$test->header));
 	}
+	function testController(){
+		copy(SITE_PATH."tests/fixtures/controller_routes.fixture.php",SITE_PATH."config/_routes.php");
+		# test connect
+		$request=load_egg("request",1);
+		$request->uri_parts=explode("/","test/25/delete");
+		$request->request_method="post";
+		$routing=new Routing($request,"_routes");
+		$request_info=$routing->climb();
+		$request->request_info=$request_info;
+		$controller = new Controller();
+		$controller->load($request);
+		unlink(SITE_PATH."config/_routes.php");
+		unlink(SITE_PATH."config/_routes.tmp.php");
 
+
+	}
 
 
 }

@@ -1,5 +1,4 @@
 <?php
-ob_start();
 require_once('simpletest/autorun.php');
 
 $site_path = str_replace("\\", "/", realpath(dirname(__FILE__)));
@@ -13,7 +12,7 @@ $apps_folder = "app";
 
 # define constants with the path to the folders
 define("EGGS_PATH", SITE_PATH . $eggs_folder . "/");
-define("APP_FOLDER",SITE_PATH . $apps_folder . "/");
+define("APP_FOLDER",SITE_PATH . "tests/fixtures/test_app/");
 
 class AllTests extends TestSuite {
     function AllTests() {
@@ -24,10 +23,9 @@ class AllTests extends TestSuite {
 	$this->addFile(TESTS_PATH."/routing_tests.php");
 	$this->addFile(TESTS_PATH."/request_tests.php");
 	$this->addFile(TESTS_PATH."/controller_tests.php");
-
+	$this->addFile(TESTS_PATH."/view_tests.php");
 
     }
     
 }
-ob_end_clean();
 ?>

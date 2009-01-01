@@ -14,20 +14,31 @@ class Controller{
 	public $old_flash;
 	public $cookie;
 	public $header;
+	# FIXME view can be seen only inside the controller class
+	# private $view
 	function __construct(){
 		# FIXME give the type param to the controller
 	}
 
 	function __destruct(){
-		if($this->is_after==true) $this->after();
+		# only in loaded controller
+		if(get_class($this)=="Controller") return ;
+			if($this->is_after==true) $this->after();
 		if(!empty($this->flash)){
 			$this->session["flash"]=array_diff($this->flash,$this->old_flash);
 		}
 		$_SESSION=$this->session;
 
+		if(!isset($this->view)) return ;
+
+		# view
+		if($this->no_layout==TRUE) $this->view->no_layout=TRUE;
+		$this->view->dump($this->request->request_info);
 	}
 
 	public function init(){
+		# only in the loaded controller
+		if(get_class($this)=="Controller") return ;
 		# init session
 		$this->session=$_SESSION;
 		session_unset();
@@ -49,6 +60,29 @@ class Controller{
 		$this->header=array();
 	}
 
+	public function load($request){
+		$req_controller=$request->request_info["controller"];
+		$req_action=$request->request_info["action"];
+
+		include_once(APP_FOLDER."controllers/".$req_controller."_controller.php");
+		$req_cname=ucfirst($req_controller)."zController";
+		$loaded=new $req_cname;
+		$this->precontroller(&$loaded,$request);
+		$loaded->$req_action();
+		
+	}
+
+	private function precontroller($controller,$request){
+		# init view
+		$controller->view=load_egg("view",1);
+		# init request
+		$controller->request=$request;
+	}
+
+	private function postcontroller(){
+	
+	}
+
 	public function setcookie($name,$value,$expire,$path=false,$domain=false){
 		# FIXME include from config
 		$key = "moscraciunexista";
@@ -68,6 +102,7 @@ class Controller{
 			$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 
 			foreach($_COOKIE as $key=>$value){
+				if($key=="PHPSESSID") continue;
 				$text= $_COOKIE[$key];
 				$value = rtrim(mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $mkey, $text, MCRYPT_MODE_ECB, $iv));
 				$this->cookie[$key]=$value;

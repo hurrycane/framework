@@ -53,8 +53,9 @@ class TestOfRoutingEngine extends UnitTestCase{
 	function testRoutingRealWorldUsage(){
 		copy(SITE_PATH."tests/fixtures/routes.fixture.php",SITE_PATH."config/test_routes.php");
 		# test connect
-		$request=array("url"=>"login/25/dude",
-		               "method"=>"get");
+		$request=new Request;
+		$request->uri_parts=explode("/","login/25/dude");
+		$request->request_method="get";
 		$routing=new Routing($request,"test_routes");
 		$request_info=$routing->climb();
 		$keys = array_keys($request_info["param"]);
@@ -63,8 +64,9 @@ class TestOfRoutingEngine extends UnitTestCase{
 		unset($routing);
 
 		# test resources
-		$request=array("url"=>"teams/25/edit",
-		               "method"=>"get");
+		$request=new Request;
+		$request->uri_parts=explode("/","teams/25/edit");
+		$request->request_method="get";
 
 		$routing=new Routing($request,"test_routes");
 		$request_info=$routing->climb();

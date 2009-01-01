@@ -150,10 +150,11 @@ class Routes{
 				$w = substr($part,1);
 				$biz = -1;
 				for($j=0;$j<count($obj[$i]["name"]);$j++){
-					if($obj[$i]["name"][$j]==$w){
-						$biz = $j;
-						break;
-					}
+				# FIXME if you want a name of a elem to not be repeted then you will get into trouble with params
+				#	if($obj[$i]["name"][$j]==$w){
+				#		$biz = $j;
+				#		break;
+				#	}
 				}
 				$type=1;
 				$place=$i;
