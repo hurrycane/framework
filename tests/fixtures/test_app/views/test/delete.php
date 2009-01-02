@@ -1,1 +1,1 @@
-aabb
+<?php echo $test; ?>

@@ -77,6 +77,10 @@ class Controller{
 		$controller->view=load_egg("view",1);
 		# init request
 		$controller->request=$request;
+		# init model
+		#$controller->model=load_egg("model",1);
+		#$config=load_config();
+		#$controller->model->config=$config["database"];
 	}
 
 	private function postcontroller(){

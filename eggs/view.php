@@ -23,37 +23,44 @@ class View{
 	function dump($request_info){
 		$controller = $request_info["controller"];
 		$action = $request_info["action"];
-		if($this->no_layout==TRUE){
-			if(empty($this->view_name)){
-				$view_path = APP_FOLDER."views/$controller/$action.php";
+		if($this->no_layout==false){
+			if($this->layout){
+				$layout_path=APP_FOLDER."views/layouts/".$this->layout.".php";
 			}else{
-				$view_path = APP_FOLDER."views/$controller/".$this->view_name.".php";
+				$layout_path=APP_FOLDER."views/layouts/$controller.php";
 			}
 
-			if(!file_exists($view_path)){
-				trigger_error("No view defined by the user",E_USER_ERROR);
-				exit("No view defined by the user");
-			}
-
-			# FIXME repeted line
-			foreach($this->data as $key=>$value){
-				$$key=$value;
-			}
-
-			include_once($view_path);
-		}else{
-			$layout_path=APP_FOLDER."view/layouts/$controller.php";
-			if(file_exists($layout_path)){
-				# FIXME repeted line
-				foreach($this->data as $key=>$value){
-					$$key=$value;
-				}
-
-				include_once($layout_path);
-			}else{
+			if(!file_exists($layout_path)){
 				trigger_error("No layout defined by the user",E_USER_ERROR);
 				exit("No layout defined by the user");
 			}
+		}
+
+		if(empty($this->view_name)){
+			$view_path = APP_FOLDER."views/$controller/$action.php";
+		}else{
+			$view_path = APP_FOLDER."views/$controller/".$this->view_name.".php";
+		}
+
+		if(!file_exists($view_path)){
+			trigger_error("No view defined by the user",E_USER_ERROR);
+			exit("No view defined by the user");
+		}
+
+		foreach($this->data as $key=>$value){
+			$$key=$value;
+		}
+
+	
+		ob_start();
+		include_once($view_path);
+		$output=ob_get_contents();
+		ob_end_clean();
+
+		if($this->no_layout==false){
+			include_once($layout_path);
+		}else{
+			echo $output;
 		}
 
 	}

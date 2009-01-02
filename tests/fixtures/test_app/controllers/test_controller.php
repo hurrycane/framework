@@ -5,7 +5,7 @@ class TestzController extends Controller{
 	}
 
 	function delete(){
-		$this->no_layout=TRUE;
+		$this->view->data("test","World");
 	}
 }
 ?>

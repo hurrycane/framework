@@ -63,7 +63,13 @@ class TestOfController extends UnitTestCase{
 		$request_info=$routing->climb();
 		$request->request_info=$request_info;
 		$controller = new Controller();
+
+		ob_start();
 		$controller->load($request);
+		$output=ob_get_contents();
+		ob_end_clean();
+		$this->assertEqual($output,"Hello World");
+
 		unlink(SITE_PATH."config/_routes.php");
 		unlink(SITE_PATH."config/_routes.tmp.php");
 

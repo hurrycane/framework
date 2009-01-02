@@ -24,6 +24,8 @@ class AllTests extends TestSuite {
 	$this->addFile(TESTS_PATH."/request_tests.php");
 	$this->addFile(TESTS_PATH."/controller_tests.php");
 	$this->addFile(TESTS_PATH."/view_tests.php");
+	$this->addFile(TESTS_PATH."/model_tests.php");
+
 
     }
     

@@ -35,8 +35,9 @@ function load_egg($egg_name,$init = FALSE, $param = FALSE){
 }
 
 function load_config($reset = false){
+
 	# config cache
-	static $cfg_cache=array();
+	static $cfg_cache;
 	# if reset empty the cfg_cache
 	if($reset) $cfg_cache = array();
 	# check if confi is already loaded
@@ -45,11 +46,11 @@ function load_config($reset = false){
 	}
 	
 	# include the config file
-	include_once(SITE_PATH."config/config.php");
+	include(SITE_PATH."config/config.php");
+
 	# check if is not damaged
 	if(is_array($config)) $cfg_cache = $config;
 	else trigger_error("You`re configuration file is damaged",E_USER_ERROR);
-
 	return $config;
 }
 

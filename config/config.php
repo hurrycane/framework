@@ -16,6 +16,7 @@ $config["database"]["host"] = "localhost";
 $config["database"]["db_name"] = "ceva";
 $config["database"]["db_user"] = "root";
 $config["database"]["db_pass"] = "";
+$config["database"]["models"] = array("test","account");
  
  
 // development configuration
