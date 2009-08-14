@@ -1,4 +1,6 @@
 <?php
+include_once(EGGS_PATH."routes.php");
+
 class Routing{
 	private $url;
 	private $method;
@@ -62,6 +64,11 @@ class Routing{
 	}
 
 	private function load_tree($file){
+		$config=load_config();
+		if(isset($config["development"]["gen_routing_tree"])){
+			$this->load_routes($file);
+			return true;
+		}
 		if(file_exists(SITE_PATH."config/$file.tmp.php")){
 			include_once(SITE_PATH."config/$file.tmp.php");
 			$this->routing_tree=&$root;

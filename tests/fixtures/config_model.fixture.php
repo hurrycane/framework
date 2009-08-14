@@ -15,7 +15,7 @@ $config["database"]["adapter"] = "mysql";
 $config["database"]["host"] = "localhost";
 $config["database"]["db_name"] = "test";
 $config["database"]["db_user"] = "root";
-$config["database"]["db_pass"] = "";
+$config["database"]["db_pass"] = "k3kc6xkc6q19t24";
 $config["database"]["models"] = array("test");
  
  

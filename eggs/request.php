@@ -34,7 +34,7 @@ Class Request{
 	}
 
 	private function format(){
-		if($_SERVER["HTTP_X_REQUESTED_WITH"]=="XMLHttpRequest"){
+		if(@$_SERVER["HTTP_X_REQUESTED_WITH"]=="XMLHttpRequest"){
 			$this->format = "xhr";
 		}elseif(strpos($_SERVER["HTTP_ACCEPT"],"text/html")!==FALSE){
 			$this->format = "html";
@@ -44,7 +44,7 @@ Class Request{
 	}
 
 	private function remote_ip(){
-		if ($_SERVER["HTTP_X_FORWARDED_FOR"]) {
+		if (@$_SERVER["HTTP_X_FORWARDED_FOR"]) {
 			if ($_SERVER["HTTP_CLIENT_IP"]) {
 				$this->proxy_ip = $_SERVER["HTTP_CLIENT_IP"];
 			} else {
@@ -52,7 +52,7 @@ Class Request{
 			}
 	         	$this->remote_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 		} else {
-			if ($_SERVER["HTTP_CLIENT_IP"]) {
+			if (@$_SERVER["HTTP_CLIENT_IP"]) {
 				$this->remote_ip = $_SERVER["HTTP_CLIENT_IP"];
 			} else {
 				$this->remote_ip = $_SERVER["REMOTE_ADDR"];
@@ -92,11 +92,11 @@ Class Request{
 	private function query_string_path_refferer(){
 		$this->query_string = $_SERVER["QUERY_STRING"];
 		$this->path=$_SERVER["REQUEST_URI"];
-		$this->referer=$_SERVER["HTTP_REFERER"];
+		$this->referer=@$_SERVER["HTTP_REFERER"];
 		
 		$p=$this->path;
 		$pos = strpos($p,"?");
-		$p =  substr($p,0,$pos);
+		if($pos!==false) $p =  substr($p,0,$pos);
 		if($p{0}=="/") $p=substr($p,1);
 		if($p{strlen($p)-1}=="/") $p=substr($p,0,strlen($p)-1);
 		$this->uri_parts=explode("/",$p);

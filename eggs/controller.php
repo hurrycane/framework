@@ -65,11 +65,10 @@ class Controller{
 		$req_action=$request->request_info["action"];
 
 		include_once(APP_FOLDER."controllers/".$req_controller."_controller.php");
-		$req_cname=ucfirst($req_controller)."zController";
+		$req_cname=ucfirst($req_controller)."Controller";
 		$loaded=new $req_cname;
 		$this->precontroller(&$loaded,$request);
 		$loaded->$req_action();
-		
 	}
 
 	private function precontroller($controller,$request){
@@ -78,13 +77,13 @@ class Controller{
 		# init request
 		$controller->request=$request;
 		# init model
-		#$controller->model=load_egg("model",1);
-		#$config=load_config();
-		#$controller->model->config=$config["database"];
+		$controller->model=load_egg("model",1);
+		$config=load_config();
+		$controller->model->config=$config["database"];
+		$controller->model->load();
 	}
 
 	private function postcontroller(){
-	
 	}
 
 	public function setcookie($name,$value,$expire,$path=false,$domain=false){

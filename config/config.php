@@ -13,10 +13,10 @@ $config["database"] = array();
 // adapter is not yet implemented
 $config["database"]["adapter"] = "mysql";
 $config["database"]["host"] = "localhost";
-$config["database"]["db_name"] = "test";
+$config["database"]["db_name"] = "yeetalx";
 $config["database"]["db_user"] = "root";
-$config["database"]["db_pass"] = "";
-$config["database"]["models"] = array("test");
+$config["database"]["db_pass"] = "k3kc6xkc6q19t24";
+$config["database"]["models"] = array("jobs","twitteracts","flickrauths","facebookauth");
  
  
 // development configuration

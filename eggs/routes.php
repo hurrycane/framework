@@ -37,7 +37,7 @@ class Routes{
 		# new
 		$this->connect($header.$controller."/new",
 		               ":controller=>$controller",
-			       ":action=>new",
+			       ":action=>newa",
 			       ":method=>GET");
 
 		# show
@@ -98,7 +98,7 @@ class Routes{
 			$a = substr_count($parts[$i],":");
 			if(empty($obj)) {
 				$obj[0]=$this->create_elem($parts[$i]);
-				$obj["count"]++;
+				@$obj["count"]++;
 				$current = &$obj[0];
 			}else{
 				$b=$this->check_for_part($parts[$i],$obj);
@@ -191,8 +191,9 @@ class Routes{
 	}
 
 	private function dfs($root,$header){
+		if(!isset($root["count"])) $root["count"]=0;
 		$output = $header .'["count"]='.$root["count"].";\n";
-		for($i=0;$i<$root["count"];$i++){
+		for($i=0;$i<@$root["count"];$i++){
 			$x = &$root[$i];
 			$hd = $header."[".$i."]";
 			$output .= $hd ."=array();\n";

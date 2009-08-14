@@ -57,7 +57,7 @@ class TestOfController extends UnitTestCase{
 		copy(SITE_PATH."tests/fixtures/controller_routes.fixture.php",SITE_PATH."config/_routes.php");
 		# test connect
 		$request=load_egg("request",1);
-		$request->uri_parts=explode("/","test/25/delete");
+		$request->uri_parts=explode("/","testz/25/delete");
 		$request->request_method="post";
 		$routing=new Routing($request,"_routes");
 		$request_info=$routing->climb();

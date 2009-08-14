@@ -1,0 +1,9 @@
+<?php
+$routes->connect("login/:altceva/dude",
+                 ":controller=>login",
+                 ":action=>show");
+$routes->connect("login/:id/ceva",
+                 ":controller=>login",
+                 ":action=>show");
+$routes->resources("teams");
+?>

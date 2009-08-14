@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-sesion_start();
+error_reporting(E_ALL  & ~E_NOTICE);
+session_start();
 
 # determine the path where the site is running
 $site_path = str_replace("\\", "/", realpath(dirname(__FILE__)));

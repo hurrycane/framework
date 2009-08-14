@@ -17,7 +17,6 @@ class ModelBase{
 			$pos=strpos($sql,"?");
 			$sql=substr($sql,0,$pos).mysql_real_escape_string($pieces[$i]).substr($sql,$pos+1);
 		}
-
 		$this->result = mysql_query($sql) or die(mysql_error());
 	}
 
@@ -67,7 +66,6 @@ class Model{
 		}
 		$config_models = $this->config["models"];
 		$this->connect();
-
 		foreach($config_models as $value){
 			global $$value;
 			include_once(APP_FOLDER."models/$value.php");
